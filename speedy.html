@@ -1,165 +1,352 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VPN доступ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speedy</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont;
+  background: #f2f2f7;
+}
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 16px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.logo {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+h1 { font-size: 24px; margin: 0 0 10px; text-align:center; }
+
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.primary { background: #007aff; color: white; }
+.secondary { background: #e5e5ea; }
+.link { background: #34c759; color: white; }
+
+.small { font-size: 14px; color: #777; line-height:1.5; }
+
+.keybox {
+  background: #f2f2f7;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #e5e5ea;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+</style>
 </head>
 
-<body style="font-family:sans-serif; max-width:420px; margin:auto; padding:20px;">
+<body>
 
-<h2>🚀 VPN доступ</h2>
-
-<div id="app"></div>
+<div class="container">
+  <div class="card" id="app"></div>
+</div>
 
 <script>
 const API = "https://api.muvik3d.workers.dev";
-let interval = null;
 
-// ===== UI =====
+let selectedPlan = null;
 
-function renderStart() {
+// ===== МЕНЮ =====
+function renderMenu() {
   document.getElementById("app").innerHTML = `
-    <h3>💳 Оплата</h3>
+<div class="logo">
+  <img src="https://downloader.disk.yandex.ru/preview/3a071f2552ce5dddbe5b6b26b2ba0ecb2317212b4ddc429bc0ddcb6890f202d7/69c41e92/-WAtbsFwphKzP4a6r-YPMuixIBI6lPpwTS3o2wdXWeImQSISyxxqlR3qwWKe1PK9U-FPx5_f4fIiJNWaUYrBYA%3D%3D?uid=0&filename=logo.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=1160x772"
+  style="width:70px; border-radius:14px;">
+</div>
+    <h1>Speedy VPN</h1>
+
+    <div class="subtitle">
+      Стабильный доступ к сервисам без ограничений.<br><br>
+      Работает с 01.12.2025<br>
+      Используется основной протокол + резервные<br><br>
+      При сбоях — есть поддержка
+    </div>
+
+    <button class="primary" onclick="renderBuy()">💳 Получить доступ</button>
+    <button onclick="renderDownload()">📲 Скачать</button>
+    <button onclick="renderHow()">📘 Инструкция</button>
+    <button onclick="renderSupport()">📩 Поддержка</button>
+    <button onclick="renderCheck()">🔍 Проверить заявку</button>
+  `;
+}
+
+// ===== ПРОВЕРКА =====
+function renderCheck() {
+  document.getElementById("app").innerHTML = `
+    <h1>🔍 Проверка</h1>
+
+    <input id="checkId" placeholder="Номер заявки">
+
+    <button class="primary" onclick="checkManual()">Проверить</button>
+    <button class="secondary" onclick="renderMenu()">← Назад</button>
+  `;
+}
+
+async function checkManual() {
+  const id = document.getElementById("checkId").value;
+
+  if (!id) return alert("Введите номер");
+
+  const res = await fetch(API + "/check?id=" + id);
+  const data = await res.json();
+
+  if (data.status !== "done") {
+    alert("❌ Не готово");
+    return;
+  }
+
+  const end = new Date(data.end_date);
+  alert("Действует до: " + end.toLocaleDateString("ru-RU"));
+}
+
+// ===== ОПЛАТА =====
+function renderBuy() {
+  document.getElementById("app").innerHTML = `
+    <h1>💳 Оплата</h1>
+
+    <div class="small">
+      Выберите срок перед оплатой:<br><br>
+
+      • 30 дней — 100₽<br>
+      • 90 дней — 300₽<br>
+      • 180 дней — 600₽<br>
+      • 365 дней — 1200₽<br><br>
+
+      Вы можете отправить любую сумму согласно выбранному сроку.<br>
+      После оплаты нажмите кнопку ниже.
+    </div>
+
     <a href="https://yoomoney.ru/to/41001638704386" target="_blank">
-      <button style="width:100%; padding:12px;">💰 Оплатить</button>
+      <button class="primary">💰 Оплатить</button>
     </a>
 
-    <br><br>
-
-    <button onclick="renderForm()" style="width:100%; padding:12px;">
-      ✅ Я оплатил
-    </button>
+    <button onclick="renderForm()">✅ Я оплатил</button>
+    <button class="secondary" onclick="renderMenu()">← Назад</button>
   `;
 }
 
+// ===== ФОРМА =====
 function renderForm() {
+  selectedPlan = null;
+
   document.getElementById("app").innerHTML = `
-    <input id="user" placeholder="Ваш ник" style="width:100%; padding:10px;"><br><br>
-    <button onclick="createOrder()" style="width:100%; padding:12px;">
-      🚀 Создать заявку
-    </button>
+    <h1>🧾 Заявка</h1>
+
+    <input id="user" placeholder="Ваш ник">
+
+    <p class="small">Срок подписки:</p>
+
+    <button onclick="selectPlan(30)">30 дней</button>
+    <button onclick="selectPlan(90)">90 дней</button>
+    <button onclick="selectPlan(180)">180 дней</button>
+    <button onclick="selectPlan(365)">365 дней</button>
+
+    <p id="planText" class="small">Не выбран</p>
+
+    <button class="primary" onclick="createOrder()">🚀 Отправить</button>
+    <button class="secondary" onclick="renderMenu()">← Назад</button>
   `;
 }
 
-function renderStatus(id) {
-  document.getElementById("app").innerHTML = `
-    <h3>Заявка: ${id}</h3>
-
-    <div style="padding:10px; background:#f3f3f3; border-radius:10px;">
-      <p id="status">⏳ Ожидаем...</p>
-    </div>
-
-    <br>
-
-    <div style="padding:10px; background:#e9ffe9; border-radius:10px;">
-      <p><b>Ваш ключ:</b></p>
-
-      <div id="keyBox" style="
-        max-height:100px;
-        overflow:auto;
-        font-size:12px;
-        word-break:break-all;
-        background:#fff;
-        padding:8px;
-        border-radius:6px;
-      ">—</div>
-
-      <br>
-
-      <button onclick="copyKey()" style="width:100%;">
-        📋 Скопировать ключ
-      </button>
-    </div>
-
-    <br>
-
-    <button onclick="checkStatus()" style="width:100%;">
-      🔄 Обновить
-    </button>
-
-    <br><br>
-
-    <button onclick="resetAll()" style="width:100%;">
-      ❌ Новый заказ
-    </button>
-  `;
-
-  startAutoCheck();
+function selectPlan(days) {
+  selectedPlan = days;
+  document.getElementById("planText").innerText = "Выбрано: " + days + " дней";
 }
 
-// ===== ЛОГИКА =====
-
+// ===== CREATE =====
 async function createOrder() {
   const user = document.getElementById("user").value;
+
+  if (!user) return alert("Введите ник");
+  if (!selectedPlan) return alert("Выберите срок");
 
   const res = await fetch(API + "/create", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ user })
+    body: JSON.stringify({ user, plan: selectedPlan })
   });
 
   const data = await res.json();
 
   localStorage.setItem("vpn_id", data.id);
+  localStorage.removeItem("vpn_key");
+
   renderStatus(data.id);
 }
 
+// ===== СТАТУС =====
+function renderStatus(id) {
+  document.getElementById("app").innerHTML = `
+    <h1>🔐 Доступ</h1>
+
+    <p>Заявка <b>${id}</b></p>
+
+    <div id="keyBox" class="keybox">
+      ⏳ Ожидаем проверку оплаты
+    </div>
+
+    <button id="copyBtn" style="display:none;" onclick="copyKey()">📋 Скопировать ключ</button>
+
+    <button onclick="checkStatus()">🔄 Обновить</button>
+    <button class="secondary" onclick="reset()">❌ Новый заказ</button>
+  `;
+
+  checkStatus();
+  setInterval(checkStatus, 10000);
+}
+
+// ===== ПРОВЕРКА =====
 async function checkStatus() {
   const id = localStorage.getItem("vpn_id");
 
   const res = await fetch(API + "/check?id=" + id);
   const data = await res.json();
 
-  if (data.status === "pending") {
-    document.getElementById("status").innerText = "⏳ Ожидайте...";
-  }
-
   if (data.status === "done") {
-    document.getElementById("status").innerText = "✅ Готово";
-    document.getElementById("keyBox").innerText = data.key;
-
-    stopAutoCheck();
+    localStorage.setItem("vpn_key", data.key);
+    showReady(data);
   }
 }
 
+// ===== ГОТОВО =====
+function showReady(data) {
+  let dateText = "";
+
+  if (data.end_date) {
+    const end = new Date(data.end_date);
+    if (!isNaN(end)) {
+      dateText = `<br><span class="small">Действует до: ${end.toLocaleDateString("ru-RU")}</span>`;
+    }
+  }
+
+  document.getElementById("keyBox").innerHTML = `
+    ✅ Готово
+    ${dateText}
+  `;
+
+  document.getElementById("copyBtn").style.display = "block";
+}
+
+// ===== КОПИЯ =====
 function copyKey() {
-  const text = document.getElementById("keyBox").innerText;
-  navigator.clipboard.writeText(text);
+  const key = localStorage.getItem("vpn_key");
+  navigator.clipboard.writeText(key);
   alert("Ключ скопирован");
 }
 
-function resetAll() {
-  localStorage.removeItem("vpn_id");
-  stopAutoCheck();
-  renderStart();
+// ===== RESET =====
+function reset() {
+  localStorage.clear();
+  renderMenu();
 }
 
-// ===== АВТОПРОВЕРКА =====
+// ===== СКАЧАТЬ =====
+function renderDownload() {
+  document.getElementById("app").innerHTML = `
+    <h1>📲 Скачать</h1>
 
-function startAutoCheck() {
-  if (interval) return;
+    <p class="small">Установите приложение под ваше устройство:</p>
 
-  interval = setInterval(() => {
-    checkStatus();
-  }, 5000); // каждые 5 сек
+    <a href="https://play.google.com/store/apps/details?id=org.amnezia.vpn"><button class="link">Android</button></a>
+    <a href="https://apps.apple.com/ru/app/defaultvpn/id6744725017"><button class="link">iPhone</button></a>
+    <a href="https://amnezia.org/ru/downloads"><button class="link">ПК / Mac / Linux</button></a>
+
+    <button class="secondary" onclick="renderMenu()">← Назад</button>
+  `;
 }
 
-function stopAutoCheck() {
-  if (interval) {
-    clearInterval(interval);
-    interval = null;
-  }
+// ===== ИНСТРУКЦИЯ =====
+function renderHow() {
+  document.getElementById("app").innerHTML = `
+    <h1>📘 Инструкция</h1>
+
+    <p class="small">
+    1. Установите приложение<br><br>
+    2. Оплатите доступ<br><br>
+    3. Нажмите "Я оплатил"<br><br>
+    4. Дождитесь проверки<br><br>
+    5. Скопируйте ключ<br><br>
+    6. Вставьте в приложение<br><br>
+    7. Подключитесь
+    </p>
+
+    <button class="secondary" onclick="renderMenu()">← Назад</button>
+  `;
+}
+
+// ===== ПОДДЕРЖКА =====
+function renderSupport() {
+  document.getElementById("app").innerHTML = `
+    <h1>📩 Поддержка</h1>
+
+    <a href="https://t.me/speedy_supportbot">
+      <button class="primary">💬 Телеграм</button>
+    </a>
+
+    <a href="mailto:muvik3d@gmail.com">
+      <button class="link">📧 Email</button>
+    </a>
+
+    <button onclick="copyEmail()">📋 Скопировать почту</button>
+
+    <button class="secondary" onclick="renderMenu()">← Назад</button>
+  `;
+}
+
+function copyEmail() {
+  navigator.clipboard.writeText("muvik3d@gmail.com");
+  alert("Почта скопирована");
 }
 
 // ===== INIT =====
+const savedId = localStorage.getItem("vpn_id");
 
-const saved = localStorage.getItem("vpn_id");
-
-if (saved) {
-  renderStatus(saved);
+if (savedId) {
+  renderStatus(savedId);
 } else {
-  renderStart();
+  renderMenu();
 }
 </script>
 
