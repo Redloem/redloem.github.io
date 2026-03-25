@@ -271,7 +271,7 @@ function renderStatus(id) {
       <a href="https://t.me/speedy_supportbot">@speedy_supportbot</a>
     </div>
 
-    <button id="copyBtn" style="display:none;" onclick="copyKey()">📋 Скопировать ключ</button>
+    <button id="copyBtn" style="display:none; text-decoration:none;" onclick="copyKey()">📋 Скопировать ключ</button>
 
     <button class="secondary" onclick="reset()">🔄 Новый заказ</button>
   `;
@@ -323,15 +323,20 @@ async function copyKey() {
   const id = localStorage.getItem("vpn_id");
 
   await navigator.clipboard.writeText(key);
-  await fetch(API + "/use?id=" + id);
+
+  // 🔥 быстрый отклик пользователю
+  const ok = confirm("Ключ скопирован.\nМожете вставлять в приложение.\n\nНажмите ОК чтобы продолжить");
+  if (!ok) return;
+
+  // дальше уже фоновая работа (не тормозит UX)
+  fetch(API + "/use?id=" + id);
 
   localStorage.removeItem("vpn_key");
 
   const btn = document.getElementById("copyBtn");
   btn.innerText = "✅ Используется";
   btn.disabled = true;
-
-  alert("Ключ скопирован");
+  btn.style.textDecoration = "none";
 }
 
 // ===== RESET =====
