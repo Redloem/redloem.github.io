@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Access</title>
+</head>
+
+<body style="font-family:sans-serif; max-width:400px; margin:auto; padding:20px;">
+
+<h2>Доступ</h2>
+<p>Стабильное подключение</p>
+
+<hr>
+
+<h3>Оплата</h3>
+<p>ЮMoney: 4100XXXXXXXX</p>
+<p>Сумма: 199₽</p>
+
+<hr>
+
+<h3>Я оплатил</h3>
+
+<form id="vpnForm">
+<input type="text" id="user" placeholder="Ваш ник" required style="width:100%; padding:10px;"><br><br>
+<input type="email" id="email" placeholder="Email" required style="width:100%; padding:10px;"><br><br>
+<input type="text" id="payment" placeholder="Комментарий платежа" required style="width:100%; padding:10px;"><br><br>
+
+<button type="submit" style="width:100%; padding:12px;">Отправить</button>
+</form>
+
+<script>
+document.getElementById("vpnForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const user = document.getElementById("user").value;
+  const email = document.getElementById("email").value;
+  const payment = document.getElementById("payment").value;
+
+  const message = `🧾 VPN заявка
+
+👤 ${user}
+📧 ${email}
+💳 ${payment}`;
+
+  fetch("https://api.telegram.org/bot8560808848:AAErbIhQ8lRzGFn0C__w74qVeXCGGeiqeBU/sendMessage", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      chat_id: "-1003344098214",
+      text: message
+    })
+  })
+  .then(() => alert("Отправлено"))
+  .catch(() => alert("Ошибка"));
+});
+</script>
+
+</body>
+</html>
