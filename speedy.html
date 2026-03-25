@@ -14,21 +14,18 @@
 
 <script>
 const API = "https://api.muvik3d.workers.dev";
+let interval = null;
 
 // ===== UI =====
 
 function renderStart() {
   document.getElementById("app").innerHTML = `
     <h3>💳 Оплата</h3>
-    <p>1 месяц — 199₽</p>
-
     <a href="https://yoomoney.ru/to/41001638704386" target="_blank">
       <button style="width:100%; padding:12px;">💰 Оплатить</button>
     </a>
 
     <br><br>
-
-    <p>После оплаты нажмите кнопку ниже:</p>
 
     <button onclick="renderForm()" style="width:100%; padding:12px;">
       ✅ Я оплатил
@@ -38,11 +35,7 @@ function renderStart() {
 
 function renderForm() {
   document.getElementById("app").innerHTML = `
-    <h3>Создание заявки</h3>
-
     <input id="user" placeholder="Ваш ник" style="width:100%; padding:10px;"><br><br>
-    <input id="email" placeholder="Email (опционально)" style="width:100%; padding:10px;"><br><br>
-
     <button onclick="createOrder()" style="width:100%; padding:12px;">
       🚀 Создать заявку
     </button>
@@ -53,49 +46,63 @@ function renderStatus(id) {
   document.getElementById("app").innerHTML = `
     <h3>Заявка: ${id}</h3>
 
-    <div style="background:#f3f3f3; padding:10px; border-radius:10px;">
-      <p id="status">⏳ Проверяем оплату...</p>
+    <div style="padding:10px; background:#f3f3f3; border-radius:10px;">
+      <p id="status">⏳ Ожидаем...</p>
     </div>
 
     <br>
 
-    <div style="background:#e9ffe9; padding:10px; border-radius:10px;">
-      <b>Ваш ключ:</b>
-      <div id="key">—</div>
+    <div style="padding:10px; background:#e9ffe9; border-radius:10px;">
+      <p><b>Ваш ключ:</b></p>
+
+      <div id="keyBox" style="
+        max-height:100px;
+        overflow:auto;
+        font-size:12px;
+        word-break:break-all;
+        background:#fff;
+        padding:8px;
+        border-radius:6px;
+      ">—</div>
+
+      <br>
+
+      <button onclick="copyKey()" style="width:100%;">
+        📋 Скопировать ключ
+      </button>
     </div>
 
     <br>
 
-    <button onclick="checkStatus()" style="width:100%; padding:10px;">
+    <button onclick="checkStatus()" style="width:100%;">
       🔄 Обновить
     </button>
 
     <br><br>
 
-    <button onclick="resetAll()" style="width:100%; padding:10px;">
+    <button onclick="resetAll()" style="width:100%;">
       ❌ Новый заказ
     </button>
   `;
+
+  startAutoCheck();
 }
 
 // ===== ЛОГИКА =====
 
 async function createOrder() {
   const user = document.getElementById("user").value;
-  const email = document.getElementById("email").value;
 
   const res = await fetch(API + "/create", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ user, email })
+    body: JSON.stringify({ user })
   });
 
   const data = await res.json();
 
   localStorage.setItem("vpn_id", data.id);
   renderStatus(data.id);
-
-  setTimeout(checkStatus, 1000);
 }
 
 async function checkStatus() {
@@ -110,13 +117,39 @@ async function checkStatus() {
 
   if (data.status === "done") {
     document.getElementById("status").innerText = "✅ Готово";
-    document.getElementById("key").innerText = data.key;
+    document.getElementById("keyBox").innerText = data.key;
+
+    stopAutoCheck();
   }
+}
+
+function copyKey() {
+  const text = document.getElementById("keyBox").innerText;
+  navigator.clipboard.writeText(text);
+  alert("Ключ скопирован");
 }
 
 function resetAll() {
   localStorage.removeItem("vpn_id");
+  stopAutoCheck();
   renderStart();
+}
+
+// ===== АВТОПРОВЕРКА =====
+
+function startAutoCheck() {
+  if (interval) return;
+
+  interval = setInterval(() => {
+    checkStatus();
+  }, 5000); // каждые 5 сек
+}
+
+function stopAutoCheck() {
+  if (interval) {
+    clearInterval(interval);
+    interval = null;
+  }
 }
 
 // ===== INIT =====
@@ -125,7 +158,6 @@ const saved = localStorage.getItem("vpn_id");
 
 if (saved) {
   renderStatus(saved);
-  setTimeout(checkStatus, 500);
 } else {
   renderStart();
 }
