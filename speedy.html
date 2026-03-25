@@ -277,14 +277,29 @@ function renderStatus(id) {
   `;
 
   checkStatus();
-  setInterval(checkStatus, 10000);
+  startChecking();
+}
+
+let interval = 3000;
+let checker;
+
+function startChecking() {
+  checker = setInterval(checkStatus, interval);
+
+  setTimeout(() => {
+    clearInterval(checker);
+    interval = 10000;
+    checker = setInterval(checkStatus, interval);
+  }, 30000);
 }
 
 // ===== ПРОВЕРКА =====
 async function checkStatus() {
   const id = localStorage.getItem("vpn_id");
 
-  const res = await fetch(API + "/check?id=" + id);
+  const res = await fetch(API + "/check?id=" + id, {
+    cache: "no-store"
+  });
   const data = await res.json();
 
   // 🔥 если уже использован
