@@ -1,71 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Access</title>
-</head>
-
-<body style="font-family:sans-serif; max-width:400px; margin:auto; padding:20px;">
-
-<h2>Доступ</h2>
-<p>Стабильное подключение</p>
-
-<hr>
-
-<h3>💳 Оплата</h3>
-<p><b>ЮMoney:</b> 4100XXXXXXXX</p>
-<p><b>Сумма:</b> 199₽</p>
-<p>Комментарий: ваш ник</p>
-
-<hr>
-
-<h3>После оплаты</h3>
-
-<form id="vpnForm">
-<input type="text" id="user" placeholder="Ваш ник" required style="width:100%; padding:10px;"><br><br>
-
-<input type="email" id="email" placeholder="Email" required style="width:100%; padding:10px;"><br><br>
-
-<input type="text" id="payment" placeholder="Комментарий платежа" required style="width:100%; padding:10px;"><br><br>
-
-<button type="submit" style="width:100%; padding:12px;">Отправить</button>
-</form>
-
 <script>
-document.getElementById("vpnForm").addEventListener("submit", function(e) {
+let currentId = localStorage.getItem("vpn_id");
+
+if (currentId) {
+  showStatus(currentId);
+}
+
+document.getElementById("vpnForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
   const user = document.getElementById("user").value;
   const email = document.getElementById("email").value;
-  const payment = document.getElementById("payment").value;
 
-  if (payment.length < 3) {
-    alert("Введите корректный платёж");
-    return;
-  }
-
-  fetch("https://api.muvik3d.workers.dev/", {
+  const res = await fetch("https://api.muvik3d.workers.dev/create", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      user: user,
-      email: email,
-      payment: payment
-    })
-  })
-  .then(() => {
-    alert("Заявка отправлена! Ожидайте конфиг");
-    document.getElementById("vpnForm").reset();
-  })
-  .catch((err) => {
-    console.error(err);
-    alert("Ошибка отправки");
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ user, email })
   });
-});
-</script>
 
-</body>
-</html>
+  const data = await res.json();
+
+  localStorage.setItem("vpn_id", data.id);
+  showStatus(data.id);
+});
+
+async function showStatus(id) {
+  document.body.innerHTML = `
+    <h2>Заявка ${id}</h2>
+    <p id="status">Проверяем...</p>
+    <button onclick="checkStatus()">Обновить</button>
+  `;
+
+  window.checkStatus = async function() {
+    const res = await fetch(`https://api.muvik3d.workers.dev/check?id=${id}`);
+    const data = await res.json();
+
+    if (data.status === "pending") {
+      document.getElementById("status").innerText = "Ожидайте...";
+    }
+
+    if (data.status === "done") {
+      document.getElementById("status").innerHTML = `
+        <b>Ваш ключ:</b><br>${data.key}
+      `;
+    }
+  };
+}
+</script>
