@@ -3,37 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Access</title>
+<title>VPN доступ</title>
 </head>
 
-<body style="font-family:sans-serif; max-width:400px; margin:auto; padding:20px;">
+<body style="font-family:sans-serif; max-width:420px; margin:auto; padding:20px;">
 
-<h2>Доступ</h2>
+<h2>🚀 VPN доступ</h2>
 
-<div id="app">
-
-<form id="vpnForm">
-<input type="text" id="user" placeholder="Ваш ник" required style="width:100%; padding:10px;"><br><br>
-<input type="email" id="email" placeholder="Email" required style="width:100%; padding:10px;"><br><br>
-<button type="submit" style="width:100%; padding:12px;">Отправить</button>
-</form>
-
-</div>
+<div id="app"></div>
 
 <script>
-let currentId = localStorage.getItem("vpn_id");
+const API = "https://api.muvik3d.workers.dev";
 
-if (currentId) {
-  showStatus(currentId);
+// ===== UI =====
+
+function renderStart() {
+  document.getElementById("app").innerHTML = `
+    <h3>💳 Оплата</h3>
+    <p>1 месяц — 199₽</p>
+
+    <a href="https://yoomoney.ru/to/41001638704386" target="_blank">
+      <button style="width:100%; padding:12px;">💰 Оплатить</button>
+    </a>
+
+    <br><br>
+
+    <p>После оплаты нажмите кнопку ниже:</p>
+
+    <button onclick="renderForm()" style="width:100%; padding:12px;">
+      ✅ Я оплатил
+    </button>
+  `;
 }
 
-document.getElementById("vpnForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+function renderForm() {
+  document.getElementById("app").innerHTML = `
+    <h3>Создание заявки</h3>
 
+    <input id="user" placeholder="Ваш ник" style="width:100%; padding:10px;"><br><br>
+    <input id="email" placeholder="Email (опционально)" style="width:100%; padding:10px;"><br><br>
+
+    <button onclick="createOrder()" style="width:100%; padding:12px;">
+      🚀 Создать заявку
+    </button>
+  `;
+}
+
+function renderStatus(id) {
+  document.getElementById("app").innerHTML = `
+    <h3>Заявка: ${id}</h3>
+
+    <div style="background:#f3f3f3; padding:10px; border-radius:10px;">
+      <p id="status">⏳ Проверяем оплату...</p>
+    </div>
+
+    <br>
+
+    <div style="background:#e9ffe9; padding:10px; border-radius:10px;">
+      <b>Ваш ключ:</b>
+      <div id="key">—</div>
+    </div>
+
+    <br>
+
+    <button onclick="checkStatus()" style="width:100%; padding:10px;">
+      🔄 Обновить
+    </button>
+
+    <br><br>
+
+    <button onclick="resetAll()" style="width:100%; padding:10px;">
+      ❌ Новый заказ
+    </button>
+  `;
+}
+
+// ===== ЛОГИКА =====
+
+async function createOrder() {
   const user = document.getElementById("user").value;
   const email = document.getElementById("email").value;
 
-  const res = await fetch("https://api.muvik3d.workers.dev/create", {
+  const res = await fetch(API + "/create", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({ user, email })
@@ -42,30 +93,41 @@ document.getElementById("vpnForm").addEventListener("submit", async function(e) 
   const data = await res.json();
 
   localStorage.setItem("vpn_id", data.id);
-  showStatus(data.id);
-});
+  renderStatus(data.id);
 
-async function showStatus(id) {
-  document.getElementById("app").innerHTML = `
-    <h3>Заявка ${id}</h3>
-    <p id="status">Ожидайте...</p>
-    <button onclick="checkStatus()">Обновить</button>
-  `;
+  setTimeout(checkStatus, 1000);
+}
 
-  window.checkStatus = async function() {
-    const res = await fetch(`https://api.muvik3d.workers.dev/check?id=${id}`);
-    const data = await res.json();
+async function checkStatus() {
+  const id = localStorage.getItem("vpn_id");
 
-    if (data.status === "pending") {
-      document.getElementById("status").innerText = "Ожидайте...";
-    }
+  const res = await fetch(API + "/check?id=" + id);
+  const data = await res.json();
 
-    if (data.status === "done") {
-      document.getElementById("status").innerHTML = `
-        <b>Ваш ключ:</b><br>${data.key}
-      `;
-    }
-  };
+  if (data.status === "pending") {
+    document.getElementById("status").innerText = "⏳ Ожидайте...";
+  }
+
+  if (data.status === "done") {
+    document.getElementById("status").innerText = "✅ Готово";
+    document.getElementById("key").innerText = data.key;
+  }
+}
+
+function resetAll() {
+  localStorage.removeItem("vpn_id");
+  renderStart();
+}
+
+// ===== INIT =====
+
+const saved = localStorage.getItem("vpn_id");
+
+if (saved) {
+  renderStatus(saved);
+  setTimeout(checkStatus, 500);
+} else {
+  renderStart();
 }
 </script>
 
