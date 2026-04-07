@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- тема ДО загрузки -->
+  <script>
+    if(localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+
+  <title>Мои приложения</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="phone">
+  <div class="island">
+    <div class="island-toggle" onclick="toggleTheme()">🌙</div>
+  </div>
+
+  <div class="content">
+
+    <div id="home">
+      <div class="center">
+        <a href="https://dalink.to/redloem" target="_blank" style="display:inline-block; position:relative; z-index:20;">
+          <img class="logo" src="images/logo.png" style="cursor:pointer; display:block;">
+        </a>
+        <h2>Redloem</h2>
+        <div class="desc">
+  iOS разработчик. Создаю приложения под iOS на различную тематику.
+  В основном — для себя, но если какое-то из представленных приложений
+  нашло отклик и у вас, буду благодарен за положительную обратную связь.
+  Не скупитесь показать ценность простыми действиями.
+</div>
+      </div>
+    </div>
+
+    <div id="appView" class="hidden">
+      <div class="app-header">
+        <img id="appIcon" src="images/app1.png" class="app-icon">
+        <div class="app-meta">
+          <h2 id="detailTitle">App</h2>
+          <div id="shortDesc" class="app-desc"></div>
+          <a href="#" class="download-btn" id="downloadBtn">
+            <img id="downloadIcon" src="images/appstore.png">
+            Apple Store
+          </a>
+        </div>
+      </div>
+
+      <div class="section-title">Описание</div>
+      <div id="detailDesc" class="full-desc" style="padding:0 10px;"></div>
+      <div class="carousel" id="screens"></div>
+      <div class="policies" id="policies"></div>
+      <div class="reviews" id="reviewsText"></div>
+    </div>
+
+  </div>
+
+  <!-- Preview -->
+  <div id="previewModal" class="preview-modal hidden">
+    <div class="preview-close" onclick="closePreview()">✕</div>
+    <img id="previewImg" src="">
+    <div class="preview-dots" id="previewDots"></div>
+  </div>
+
+  <!-- Tabbar -->
+  <div class="tabbar">
+    <img src="images/appstore.png" onclick="goHome()">
+    <img src="images/app1.png" onclick="openApp('app1')">
+    <img src="images/app2.png" onclick="openApp('app2')">
+    <img src="images/app3.png" onclick="openApp('app3')">
+  </div>
+
+</div>
+
+<!-- JS -->
+<script src="app.js"></script>
+
+</body>
+</html>
