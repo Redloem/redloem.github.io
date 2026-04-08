@@ -36,7 +36,8 @@ function updateIcons() {
 
   const downloadIcon = document.getElementById('downloadIcon');
   if (downloadIcon) {
-    downloadIcon.src = isDark ? 'images/appstore-dark.png' : 'images/appstore.png';
+    // always use light App Store icon (no dark variant)
+    downloadIcon.src = 'images/appstore.png';
   }
 }
 
@@ -84,15 +85,16 @@ function openApp(name) {
     downloadBtn.href = 'https://apps.apple.com/app/id6761015838';
 
     currentScreens = [
-      'screens/app1-1.png',
-      'screens/app1-2.png',
-      'screens/app1-3.png'
+      'screens/app1-1.webp',
+      'screens/app1-2.webp',
+      'screens/app1-3.webp'
     ];
     window._currentScreens = currentScreens;
 
     screens.innerHTML = currentScreens.map((src, i) =>
-      `<img src="${src}" onclick="openPreview(${i})">`
+      `<img src="${src}" loading="lazy" style="touch-action:auto;" onclick="openPreview(${i})">`
     ).join('');
+    screens.style.touchAction = 'auto';
 
     policies.innerHTML = `
       <a href="https://redloem.github.io/speedway/privacy.html" target="_blank">Политика конфиденциальности</a>
@@ -110,15 +112,16 @@ function openApp(name) {
     downloadBtn.href = 'https://apps.apple.com/app/id6760973182';
 
     currentScreens = [
-      'screens/app2-1.png',
-      'screens/app2-2.png',
-      'screens/app2-3.png'
+      'screens/app2-1.webp',
+      'screens/app2-2.webp',
+      'screens/app2-3.webp'
     ];
     window._currentScreens = currentScreens;
 
     screens.innerHTML = currentScreens.map((src, i) =>
-      `<img src="${src}" onclick="openPreview(${i})">`
+      `<img src="${src}" loading="lazy" style="touch-action:auto;" onclick="openPreview(${i})">`
     ).join('');
+    screens.style.touchAction = 'auto';
 
     policies.innerHTML = `
       <a href="https://redloem.github.io/fire-calendar/privacy.html" target="_blank">Политика конфиденциальности</a>
