@@ -147,10 +147,10 @@ html.dark .island-toggle {
 }
 
 .content {
-  height: calc(100% - 70px);
+  height: calc(100% - 96px);
   overflow-y: auto;
   padding-top: 48px;
-  padding-bottom: 20px;
+  padding-bottom: 24px;
 }
 
 .hidden {
@@ -185,6 +185,55 @@ html.dark .island-toggle {
   width: 72px;
   height: 72px;
   border-radius: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
+.app-icon:active {
+  transform: scale(0.95);
+  animation: none;
+}
+
+.app-icon:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+html.dark .app-icon:hover {
+  box-shadow: 0 8px 20px rgba(255,255,255,0.18);
+  transform: scale(1.04);
+}
+
+
+.app-icon-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-icon-wrap::after {
+  content: "Открыть";
+  font-size: 10px;
+  margin-top: -2px; /* отступ под иконкой */
+  color: #8e8e93;
+  opacity: 0.9;
+  text-align: center;
+  width: 100%;
+}
+
+html.dark .app-icon-wrap::after {
+  color: #9a9a9e;
+}
+
+@keyframes subtlePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+html.dark .app-icon {
+  animation: none;
 }
 
 .app-meta h2 {
@@ -227,13 +276,13 @@ html.dark .full-desc {
 
 .tabbar {
   position: absolute;
-  bottom: 10px;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 40px);
-  height: 60px;
+  width: calc(100% - 32px);
+  height: 82px; /* even bigger bar */
   background: rgba(0,0,0,0.05);
-  border-radius: 20px;
+  border-radius: 26px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -241,17 +290,28 @@ html.dark .full-desc {
 
 html.dark .tabbar {
   background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
 .tabbar img {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 64px; /* larger icons */
+  height: 64px;
+  border-radius: 16px;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .tabbar img.active {
   transform: scale(1.05);
+}
+
+.tabbar img:active {
+  transform: scale(0.92);
+}
+
+html.dark .tabbar img.active {
+  box-shadow: 0 4px 10px rgba(255,255,255,0.15);
 }
 
 .preview-modal {
@@ -286,29 +346,37 @@ html.dark .tabbar {
 }
 
 .download-btn {
-  display: inline-flex;
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 4px;
-  padding: 5px 10px;
-  background: rgba(0,0,0,0.04);
-  color: #007aff;
-  border-radius: 8px;
+  justify-content: center; /* center text */
+  padding: 10px 16px 10px 36px; /* closer to icon */
+  margin-top: 6px;
+  background: #f2f2f7;
+  color: #000;
+  border-radius: 16px;
   text-decoration: none;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
   transition: all 0.2s ease;
 }
 
 .download-btn img {
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
+  position: absolute;
+  left: 12px; /* moved right for tighter spacing */
+  top: 50%;
+  transform: translateY(-50%); /* vertical center */
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
 }
 
+
 html.dark .download-btn {
-  background: rgba(255,255,255,0.06);
-  color: #0a84ff;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
 }
 
 .policies {
@@ -350,23 +418,6 @@ h2 {
 html.dark h2 {
   color: #fff;
 }
-
-/* fix icon scaling consistency */
-.tabbar img {
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-
-.tabbar img:active {
-  transform: scale(0.92);
-}
-
-html.dark .tabbar img.active {
-  box-shadow: 0 4px 10px rgba(255,255,255,0.15);
-}
-
-
-/* --- restore missing original behaviors --- */
 
 /* appView color inheritance in dark */
 html.dark #appView,
@@ -433,11 +484,6 @@ html.dark #home {
 
 .preview-dots span.active {
   background: #fff;
-}
-
-/* slight improvement for dark tabbar */
-html.dark .tabbar {
-  border: 1px solid rgba(255,255,255,0.06);
 }
 
 /* --- smooth theme transition --- */
