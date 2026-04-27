@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дмитрий Фролов — Видеограф</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-line"></div>
+            <p class="preloader-text">Загрузка</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <span class="logo-text">Дмитрий Фролов</span>
+                <span class="logo-sub">SOBAKA Producr</span>
+            </a>
+            
+            <nav class="nav" id="nav">
+                <ul class="nav-list">
+                    <li><a href="#portfolio" class="nav-link">Портфолио</a></li>
+                    <li><a href="#about" class="nav-link">Обо мне</a></li>
+                    <li><a href="#services" class="nav-link">Услуги</a></li>
+                    <li><a href="#contact" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+
+            <button class="burger" id="burger" aria-label="Открыть меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <button id="themeToggle" class="btn btn-outline" style="margin-left:15px;">
+                🌙
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-video-wrapper">
+            <video autoplay muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1519741497674-611481863552?w=1600" class="hero-video">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-wedding-couple-holding-hands-at-sunset-4747-large.mp4" type="video/mp4">
+                Ваш браузер не поддерживает видео.
+            </video>
+            <div class="hero-overlay"></div>
+        
+            <div class="hero-content">
+                <p class="hero-subtitle reveal-text">Свадебный видеограф</p>
+                <h1 class="hero-title reveal-text">Дмитрий Фролов</h1>
+                <p class="hero-description reveal-text">Создаю кинематографичные истории любви, которые хочется пересматривать снова и снова</p>
+                <div class="hero-buttons reveal-text">
+                    <a href="#portfolio" class="btn btn-primary">Смотреть работы</a>
+                    <a href="#contact" class="btn btn-outline">Обсудить проект</a>
+                </div>
+            </div>
+            <a href="#portfolio" class="scroll-down" aria-label="Прокрутить вниз">
+                <div class="scroll-down-mouse">
+                    <div class="scroll-down-wheel"></div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio section" id="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Портфолио</span>
+                <h2 class="section-title">Избранные работы</h2>
+                <p class="section-subtitle">Каждый фильм — это уникальная история, рассказанная через объектив</p>
+            </div>
+
+            <div class="portfolio-filters">
+                <button class="filter-btn active" data-filter="all">Все работы</button>
+                <button class="filter-btn" data-filter="wedding">Свадьбы</button>
+                <button class="filter-btn" data-filter="lovestory">Love Story</button>
+                <button class="filter-btn" data-filter="commercial">Коммерция</button>
+            </div>
+
+            <div class="portfolio-grid">
+                <!-- Wedding 1 -->
+                <div class="portfolio-item" data-category="wedding">
+                    <div class="portfolio-card">
+                        <div class="portfolio-video">
+                            <iframe src="https://vk.com/video_ext.php?oid=-117596093&id=456242425&hash=2bcd8795df646514" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                        <div class="portfolio-info">
+                            <span class="portfolio-category">Свадьба</span>
+                            <h3 class="portfolio-name">Дмитрий & Анна</h3>
+                            <p class="portfolio-location"><i class="fas fa-map-marker-alt"></i> Тольятти / Самара</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Love Story 1 -->
+                <div class="portfolio-item" data-category="lovestory">
+                    <div class="portfolio-card">
+                        <div class="portfolio-video">
+                            <iframe src="https://vk.com/video_ext.php?oid=-117596093&id=456242472&hash=32c5a906b2a80306" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                        <div class="portfolio-info">
+                            <span class="portfolio-category">Love Story</span>
+                            <h3 class="portfolio-name">Александр & Елена</h3>
+                            <p class="portfolio-location"><i class="fas fa-map-marker-alt"></i> Тольятти / Самара</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wedding 2 -->
+                <div class="portfolio-item" data-category="wedding">
+                    <div class="portfolio-card">
+                        <div class="portfolio-video">
+                            <iframe src="https://vk.com/video_ext.php?oid=-133658140&id=456273698&hash=c01b4c67de32c583" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                        <div class="portfolio-info">
+                            <span class="portfolio-category">Свадьба</span>
+                            <h3 class="portfolio-name">Максим & Ольга</h3>
+                            <p class="portfolio-location"><i class="fas fa-map-marker-alt"></i> Тольятти / Самара</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commercial 1 -->
+                <div class="portfolio-item" data-category="commercial">
+                    <div class="portfolio-card">
+                        <div class="portfolio-video">
+                            <iframe src="https://vk.com/video_ext.php?oid=-133658140&id=456273751&hash=1c87c352a7af204f" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                        <div class="portfolio-info">
+                            <span class="portfolio-category">Коммерция</span>
+                            <h3 class="portfolio-name">Рекламный ролик «La Vue»</h3>
+                            <p class="portfolio-location"><i class="fas fa-map-marker-alt"></i> Тольятти / Самара</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Love Story 2 -->
+                <div class="portfolio-item" data-category="lovestory">
+                    <div class="portfolio-card">
+                        <div class="portfolio-video">
+                            <iframe src="https://vk.com/video_ext.php?oid=-111317253&id=456240566&hash=c0ed339710b3f719" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                        <div class="portfolio-info">
+                            <span class="portfolio-category">Love Story</span>
+                            <h3 class="portfolio-name">Иван & Мария</h3>
+                            <p class="portfolio-location"><i class="fas fa-map-marker-alt"></i> Тольятти / Самара</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wedding 3 -->
+                <div class="portfolio-item" data-category="wedding">
+                    <div class="portfolio-card">
+                        <div class="portfolio-video">
+                            <iframe src="https://vk.com/video_ext.php?oid=-111317253&id=456240571&hash=e7d2b4bfe9afee4e" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                        <div class="portfolio-info">
+                            <span class="portfolio-category">Свадьба</span>
+                            <h3 class="portfolio-name">Сергей & Виктория</h3>
+                            <p class="portfolio-location"><i class="fas fa-map-marker-alt"></i> Тольятти / Самара</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image-wrapper about-image-small">
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800&h=1000&fit=crop" alt="Артём Волков за работой">
+                        <div class="about-image-frame"></div>
+                        <div class="about-experience">
+                            <span class="about-experience-number">7+</span>
+                            <span class="about-experience-text">лет<br>опыта</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-content about-content-left">
+                    <span class="section-tag">Обо мне</span>
+                    <h2 class="section-title">Создаю фильмы, которые остаются в памяти навсегда</h2>
+                    <div class="about-text">
+                        <p>Привет! Меня зовут Дмитрий, и я профессиональный видеограф с двухлетним опытом съёмки свадеб, love story и коммерческих проектов.</p>
+                        <p>Моя философия проста: я не просто снимаю видео — я рассказываю истории. Каждая пара уникальна, и моя задача — найти те самые моменты, которые делают вашу историю неповторимой.</p>
+                        <p>Работаю в кинематографическом стиле с использованием профессионального оборудования: камеры Sony FX3, стабилизаторы, дроны и кинематографическую цветокоррекцию.</p>
+                    </div>
+
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="150">0</span>
+                            <span class="stat-label">Свадебных фильмов</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="80">0</span>
+                            <span class="stat-label">Love Story</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="45">0</span>
+                            <span class="stat-label">Коммерческих проектов</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-count="12">0</span>
+                            <span class="stat-label">Международных съёмок</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services section" id="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Услуги</span>
+                <h2 class="section-title">Что я предлагаю</h2>
+                <p class="section-subtitle">Полный спектр видеопродакшна для вашего особенного дня</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="service-title">Свадебный фильм</h3>
+                    <p class="service-description">Полноценный кинематографичный фильм продолжительностью 15–25 минут, рассказывающий вашу историю от начала до конца.</p>
+                    <ul class="service-features">
+                        <li>Съёмка 10–12 часов</li>
+                        <li>2 оператора + ассистент</li>
+                        <li>Аэросъёмка дроном</li>
+                        <li>Цветокоррекция и звук</li>
+                    </ul>
+                    <div class="service-price">от 85 000 ₽</div>
+                </div>
+                <div class="service-card featured">
+                    <div class="service-badge">Популярное</div>
+                    <div class="service-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 class="service-title">Love Story</h3>
+                    <p class="service-description">Романтическая история вашей пары в живописных локациях. Идеально для помолвки, годовщины или просто так.</p>
+                    <ul class="service-features">
+                        <li>Съёмка 3–4 часа</li>
+                        <li>Выбор локации</li>
+                        <li>Помощь с позированием</li>
+                        <li>Фильм 3–5 минут</li>
+                    </ul>
+                    <div class="service-price">от 35 000 ₽</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="service-title">Коммерческая съёмка</h3>
+                    <p class="service-description">Рекламные ролики, промо-видео, корпоративные фильмы и контент для социальных сетей.</p>
+                    <ul class="service-features">
+                        <li>Сценарий и раскадровка</li>
+                        <li>Профессиональный свет</li>
+                        <li>Монтаж и графика</li>
+                        <li>Адаптация под площадки</li>
+                    </ul>
+                    <div class="service-price">от 50 000 ₽</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Contact Section -->
+    <section class="contact section" id="contact">
+        <div class="container" style="text-align:center; max-width:600px;">
+            
+            <div class="contact-avatar" style="margin-bottom:30px;">
+                <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=400&fit=crop" 
+                     alt="Дмитрий Фролов"
+                     style="width:220px; height:220px; border-radius:50%; object-fit:cover;">
+            </div>
+
+            <p class="contact-description" style="margin-bottom:30px;">
+                Свяжитесь со мной любым удобным для вас способом
+            </p>
+
+            <a href="tel:+79171230732" class="btn btn-outline" style="display:inline-block; margin-bottom:15px; padding:10px 18px; font-size:14px; border-radius:25px;">
+                <i class="fas fa-phone"></i> +7 917 123-07-32
+            </a>
+
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
+                <a href="https://t.me/frolov_diman" target="_blank" class="btn btn-primary" style="padding:12px 20px; font-size:14px; border-radius:25px;">
+                    <i class="fab fa-telegram-plane"></i> Написать в Telegram
+                </a>
+
+                <a href="#" class="btn btn-primary" style="padding:12px 20px; font-size:14px; border-radius:25px;">
+                    <i class="fas fa-comment"></i> Написать в Max
+                </a>
+
+                <a href="https://vk.com/" target="_blank" class="btn btn-primary" style="padding:12px 20px; font-size:14px; border-radius:25px;">
+                    <i class="fab fa-vk"></i> Написать ВКонтакте
+                </a>
+
+                <a href="https://instagram.com/your_username" target="_blank" class="btn btn-primary" style="padding:12px 20px; font-size:14px; border-radius:25px;">
+                    <i class="fab fa-instagram"></i> Написать в Instagram
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+
+    <script src="js/main.js"></script>
+
+<div class="site-footer" style="margin-top:40px;">
+    <div>Видеограф Дмитрий Фролов</div>
+    <div>© Все права защищены. 2026</div>
+    <div class="site-credit">
+        Сайт от 
+        <a href="https://redloem.ru" target="_blank">Redloem</a>
+    </div>
+</div>
+
+</body>
+</html>
